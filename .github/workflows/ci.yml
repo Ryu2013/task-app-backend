@@ -108,8 +108,9 @@ jobs:
 
       # SSMを使ってデプロイコマンドを送信
       - name: Deploy via SSM Send-Command
+        id: ssm
         run: |
-          aws ssm send-command \
+          COMMAND_ID=$(aws ssm send-command \
             --document-name "AWS-RunShellScript" \
             --targets "Key=tag:Name,Values=task-app" \
             --comment "Auto deployment from GitHub Actions" \
@@ -122,4 +123,23 @@ jobs:
               "bundle exec rails assets:precompile RAILS_ENV=production",
               "sudo systemctl restart task_app"
             ]' \
-            --output text
+            --query "Command.CommandId" \
+            --output text)
+
+          echo "command_id=$COMMAND_ID" >> $GITHUB_OUTPUT
+          echo "SSM CommandId: $COMMAND_ID"
+
+      - name: Wait for SSM command
+        run: |
+          aws ssm wait command-executed \
+            --command-id ${{ steps.ssm.outputs.command_id }} \
+            --region ap-northeast-1
+
+      - name: Show SSM invocation details
+        if: always()
+        run: |
+          aws ssm list-command-invocations \
+            --command-id ${{ steps.ssm.outputs.command_id }} \
+            --details \
+            --region ap-northeast-1 \
+            --output table
