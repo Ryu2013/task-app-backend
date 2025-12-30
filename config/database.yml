@@ -69,3 +69,7 @@ production:
   cable:
     <<: *primary_production
     database: runteq_production
+
+  queue:
+    <<: *primary_production
+    database: runteq_production
