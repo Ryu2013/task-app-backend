@@ -114,7 +114,7 @@ jobs:
             --targets "Key=tag:Name,Values=task-app" \
             --comment "Auto deployment from GitHub Actions" \
             --parameters 'commands=[
-              "cd /var/www/task_app",
+              "cd /var/www/task_app-backend",
               "git pull origin main",
               "source /home/ec2-user/.bash_profile",
               "bundle install --deployment --without development test",
