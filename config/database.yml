@@ -57,10 +57,15 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
-  database: runteq_production
-  username: admin
-  password: <%= ENV['RDB_PASSWORD'] %>
-  host: <%= ENV['RDB_HOST'] %>
-  pool: 5
-  timeout: 5000
+  primary: &primary_production
+    <<: *default
+    database: runteq_production
+    username: admin
+    password: <%= ENV['RDB_PASSWORD'] %>
+    host: <%= ENV['RDB_HOST'] %>
+    pool: 5
+    timeout: 5000
+
+  cable:
+    <<: *primary_production
+    database: runteq_production
