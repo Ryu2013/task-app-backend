@@ -47,20 +47,20 @@ jobs:
   test:
     runs-on: ubuntu-latest
     services:
-        mysql:
-          image: mysql:8.0
-          env:
-            MYSQL_ROOT_PASSWORD: password
-            MYSQL_DATABASE: test_db
-            MYSQL_USER: test
-            MYSQL_PASSWORD: password
-          ports:
-            - 3306:3306
-          options: >-
-            --health-cmd="mysqladmin ping -h localhost -p$password"
-            --health-interval=10s
-            --health-timeout=5s
-            --health-retries=5
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: test_db
+          MYSQL_USER: test
+          MYSQL_PASSWORD: password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -p$password"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
       redis:
         image: redis
@@ -82,13 +82,13 @@ jobs:
           bundler-cache: true
 
       - name: Run Rails tests (Minitest)
-          env:
-            RAILS_ENV: test
-            DATABASE_URL: mysql2://test:password@127.0.0.1:3306/test_db
-            TZ: Asia/Tokyo
-          run: |
-            bin/rails db:test:prepare
-            bin/rails test
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: mysql2://test:password@127.0.0.1:3306/test_db
+          TZ: Asia/Tokyo
+        run: |
+          bin/rails db:test:prepare
+          bin/rails test
 
   # === 4. 自動デプロイ (SSM経由) ===
   deploy:
