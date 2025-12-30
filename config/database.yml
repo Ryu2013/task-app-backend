@@ -73,3 +73,7 @@ production:
   queue:
     <<: *primary_production
     database: runteq_production
+
+  cache:
+    <<: *primary_production
+    database: runteq_production
