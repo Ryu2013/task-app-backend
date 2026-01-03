@@ -1,7 +1,8 @@
 threads_count = ENV.fetch("RAILS_MAX_THREADS", 3)
 threads threads_count, threads_count
 
-port ENV.fetch("PORT", 3000)
+# Unix socket configuration for Nginx
+bind "unix:///var/www/task-app-backend/tmp/sockets/puma.sock"
 
 plugin :tmp_restart
 
