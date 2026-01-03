@@ -114,12 +114,13 @@ jobs:
             --targets "Key=tag:Name,Values=task-app" \
             --comment "Auto deployment from GitHub Actions" \
             --parameters 'commands=[
-              "cd /var/www/task_app-backend",
+              "cd /var/www/task-app-backend",
               "git pull origin main",
               "source /home/ec2-user/.bash_profile",
               "bundle install --deployment --without development test",
-              "bundle exec rails db:migrate RAILS_ENV=production",
-              "bundle exec rails assets:precompile RAILS_ENV=production",
-              "sudo systemctl restart task_app"
+              "RAILS_ENV=production bundle exec rails db:migrate",
+              "RAILS_ENV=production bundle exec rails assets:precompile",
+              "sudo systemctl restart task-app"
             ]' \
             --output text
+
